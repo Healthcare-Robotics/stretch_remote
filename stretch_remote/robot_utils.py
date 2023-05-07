@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-import stretch_remote.zmq_server as zmq_server
-import stretch_remote.zmq_client as zmq_client
-
 def read_robot_status(client):
     robot_status = client.receive_timeout(timeout=0.2)
     if robot_status is None:

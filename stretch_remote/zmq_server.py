@@ -5,6 +5,8 @@ import time
 import json
 import numpy as np
 
+##############################################################################
+
 class SocketServer:
     def __init__(self, port=5556):
         self.context = zmq.Context()
@@ -17,6 +19,8 @@ class SocketServer:
         payload_dict['message_id'] = self.message_id
         self.socket.send_string(json.dumps(payload_dict, indent=4))
         self.message_id += 1
+
+##############################################################################
 
 if __name__ == "__main__":
     ss = SocketServer()
