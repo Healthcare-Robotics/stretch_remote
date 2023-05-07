@@ -16,14 +16,15 @@ def main():
     delta_ang = 0.1
     enable_moving = True
 
-    # server.send_payload(HOME_POS_DICT)
-    # print('Moving to home')
+    server.send_payload(HOME_POS_DICT)
+    print('Moving to home')
 
     while True:
         robot_ok, pos_dict = read_robot_status(client)
 
         # frame = feed.get_frame()
         # cv2.imshow("frames", frame)
+        # print("e")
 
         keycode = cv2.waitKey(1) & 0xFF
 

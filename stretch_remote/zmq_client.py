@@ -6,8 +6,11 @@ import json
 import threading
 import time
 
-IP_DESKTOP = '127.0.0.1' # TODO: Change this to the IP address of the desktop
-IP_ROBOT = '127.0.0.1' # TODO: Change this to the IP address of the robot
+# IP_DESKTOP = '143.215.91.191' # TODO: Change this to the IP address of the desktop
+# IP_ROBOT = '100.116.230.90' # TODO: Change this to the IP address of the robot
+
+IP_DESKTOP = "192.168.0.39" # '143.215.91.191' # TODO: Change this to the IP address of the desktop
+IP_ROBOT = "192.168.0.96"
 
 PORT_COMMAND_SERVER = 5556
 PORT_STATUS_SERVER = 5557
