@@ -8,6 +8,6 @@ setup(
     author='auth',
     author_email='tan_you_liang@hotmail.com',
     license='MIT',
-    install_requires=['zmq'],
+    install_requires=['zmq', 'typing'],
     zip_safe=False
 )

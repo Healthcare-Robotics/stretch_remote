@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
-def read_robot_status(client):
-    robot_status = client.receive_timeout(timeout=0.2)
-    if robot_status is None:
-    #     print('Robot not ok, dont have recent status packet')
-        return False, None
+def read_robot_status(robot_status):
 
     pos_dict = dict()
     pos_dict['lift_effort'] = robot_status['lift']['force']

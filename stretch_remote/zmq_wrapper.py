@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import zmq
 import argparse
 
@@ -9,18 +11,21 @@ class SocketServer:
         self.socket = self.context.socket(zmq.REP)
         self.socket.bind(f"tcp://*:{port}")
         self.impl_callback = impl_callback
+        print("Socket server is listening...")
 
     def run(self):
-        #  Wait for next request from client
-        message = self.socket.recv()
-        print(f"Received request: {message}")
-        #  Send reply back to client
-        
-        if self.impl_callback:
-            res = self.impl_callback()
-            self.socket.send(res)
-        else:
-            self.socket.send(b"World")
+        while True:
+            #  Wait for next request from client
+            message = self.socket.recv()
+            print(f"Received request: {message}")
+            #  Send reply back to client
+            
+            if self.impl_callback:
+                res = self.impl_callback(message)
+                self.socket.send(res)
+            else:
+                print("WARNING: No implementation callback provided.")
+                self.socket.send(b"World")
 
 ##############################################################################
 
@@ -33,17 +38,19 @@ class SocketClient:
         self.socket.connect(f"tcp://{ip}:{port}")
 
     def send_payload(self, request):
-        print(f"Sending request {request} …")
-        self.socket.send(b"Hello")
-
-        #  Get the reply.
+        # print(f"Sending request {request} …")
+        encoded_str = request.encode()
+        self.socket.send(encoded_str)
+        # Get the reply.
         message = self.socket.recv()
-        print(f"Received reply {request} [ {message} ]")
+        # print(f"Received reply {request} [ {message} ]")
+        return message
 
 
 ##############################################################################
 
 if __name__ == "__main__":
+    # NOTE: This is just for Testing
     parser = argparse.ArgumentParser()
     parser.add_argument('--server', action='store_true')
     parser.add_argument('--client', action='store_true')
