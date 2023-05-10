@@ -8,8 +8,12 @@ import termios
 import json
 from typing import Dict, List, Tuple
 from stretch_remote.robot_utils import *
+import signal
 
 from stretch_remote.remote_client import RemoteClient
+
+def signal_handler(signal, frame):
+    print('You pressed Ctrl+C!')
 
 def teleop(client: RemoteClient):
     """
@@ -38,10 +42,12 @@ def teleop(client: RemoteClient):
     original_settings = termios.tcgetattr(sys.stdin)
     tty.setraw(sys.stdin.fileno())
 
+    # signal.signal(signal.SIGINT, signal_handler)
+
     while True:
         # Get keyboard input
-        input_ready, _, _ = select.select([sys.stdin], [], [], 0.2)
-        
+        input_ready, _, _ = select.select([sys.stdin], [], [], 0.1)
+
         # # If input is ready, read it from the keyboard and do something with it
         if not sys.stdin in input_ready:
             continue
@@ -57,7 +63,10 @@ def teleop(client: RemoteClient):
             enable_moving = False
             client.home()
         if enable_moving:
-            if keycode == '[':     # drive X
+            if keycode == 'q':
+                print("Exiting")
+                break
+            elif keycode == '[':     # drive X
                 client.move({'x':-delta_lin})
             elif keycode == ']':     # drive X
                 client.move({'x':delta_lin})
@@ -85,8 +94,6 @@ def teleop(client: RemoteClient):
                 client.move({'gripper':pos_dict['gripper'] - 5})
             elif keycode == 'n':     # drive gripper
                 client.move({'gripper':pos_dict['gripper'] + 5})
-            elif keycode == 'q':
-                break
 
     # Restore the console to its original settings
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, original_settings)

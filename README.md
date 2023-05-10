@@ -17,7 +17,7 @@ python3 stretch_remote/robot_server.py
 
 Run this on a remote client via teleop.py
 ```bash
-python3 teleop.py  -ip <REMOTE_ROBOT_IP>
+python3 teleop.py --ip <REMOTE_ROBOT_IP>
 ```
 
 ## Use remote client python lib
