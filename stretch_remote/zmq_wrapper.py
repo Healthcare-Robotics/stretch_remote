@@ -2,13 +2,13 @@
 
 import zmq
 import argparse
-from typing import Optional
+from typing import Optional, Callable
 import time
 
 ##############################################################################
 
 class SocketServer:
-    def __init__(self, port=5556, impl_callback=None):
+    def __init__(self, port=5556, impl_callback=Callable):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.REP)
         self.socket.bind(f"tcp://*:{port}")

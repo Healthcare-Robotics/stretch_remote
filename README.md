@@ -26,7 +26,14 @@ python3 teleop.py --ip <REMOTE_ROBOT_IP>
 from stretch_remote.remote_client import RemoteClient
 
 rc = RemoteClient(ip=<IP>, port=<PORT>)
+
+# home the robot
 rc.home()
-rc.get_status()
+
+# Get the robot status
+s = rc.get_status()
+print(s)
+
+# Move the robot
 rc.move({'y': 0.1})
 ```
