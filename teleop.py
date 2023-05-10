@@ -12,8 +12,15 @@ import signal
 
 from stretch_remote.remote_client import RemoteClient
 
-def signal_handler(signal, frame):
-    print('You pressed Ctrl+C!')
+def get_robot_status(client: RemoteClient):
+    """
+    Get the current status of the robot from RemoteClient class
+    """
+    _robot_status = client.get_status()
+    if _robot_status is not None:
+        _, pos_dict = read_robot_status(_robot_status)
+        return pos_dict
+    return None
 
 def teleop(client: RemoteClient):
     """
@@ -42,9 +49,13 @@ def teleop(client: RemoteClient):
     original_settings = termios.tcgetattr(sys.stdin)
     tty.setraw(sys.stdin.fileno())
 
-    # signal.signal(signal.SIGINT, signal_handler)
+    do_loop = True
+    pos_dict = get_robot_status(client)
+    if pos_dict is None:
+        print("Robot is not connected, exiting...")
+        do_loop = False
 
-    while True:
+    while do_loop:
         # Get keyboard input
         input_ready, _, _ = select.select([sys.stdin], [], [], 0.1)
 
@@ -54,7 +65,9 @@ def teleop(client: RemoteClient):
         keycode  = sys.stdin.read(1)
 
         # print("Input received:", input_char, "\n")
-        _, pos_dict = read_robot_status(client.get_status())
+        _robot_status = client.get_status()
+        if _robot_status is not None:
+            _, pos_dict = read_robot_status(_robot_status)
         # print("Current position:", pos_dict)
 
         if keycode == ' ':     # toggle moving
@@ -91,6 +104,7 @@ def teleop(client: RemoteClient):
             elif keycode == 'l':     # drive yaw
                 client.move({'yaw':pos_dict['yaw'] + delta_ang / 2})
             elif keycode == 'b':     # drive gripper
+                # print("Gripper position:", pos_dict['gripper'])
                 client.move({'gripper':pos_dict['gripper'] - 5})
             elif keycode == 'n':     # drive gripper
                 client.move({'gripper':pos_dict['gripper'] + 5})

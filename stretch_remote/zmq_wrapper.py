@@ -12,6 +12,7 @@ class SocketServer:
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.REP)
         self.socket.bind(f"tcp://*:{port}")
+        self.socket.setsockopt(zmq.SNDHWM, 5)
         self.impl_callback = impl_callback
         print("Socket server is listening...")
 
@@ -35,7 +36,7 @@ class SocketServer:
 ##############################################################################
 
 class SocketClient:    
-    def __init__(self, ip, port=5556, timeout_ms = 200):
+    def __init__(self, ip, port=5556, timeout_ms = 400):
         self.context = zmq.Context()
         #  Socket to talk to server
         print("Connecting to socket server…")

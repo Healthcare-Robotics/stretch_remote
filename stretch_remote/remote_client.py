@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import json
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional
 
 from stretch_remote.zmq_wrapper import SocketClient
 
@@ -20,9 +20,11 @@ class RemoteClient:
         s = json.dumps(HOME_POS_DICT)
         self.socket_client.send_payload(s)
 
-    def get_status(self) -> Dict:
+    def get_status(self) -> Optional[Dict]:
         """Get the current status of the robot"""
         s = self.socket_client.send_payload("")
+        if s is None:
+            return None
         return json.loads(s)
 
     def move(self, description: Dict):
