@@ -47,10 +47,10 @@ class RobotControlServer:
         if 'yaw' in input_dict:
             self.robot.end_of_arm.move_to('wrist_yaw', input_dict['yaw'], self.wrist_vel, self.wrist_accel)
         if 'gripper' in input_dict:
-            print('moving gripper to ', input_dict['gripper'])
+            # print('moving gripper to ', input_dict['gripper'])
             self.robot.end_of_arm.move_to('stretch_gripper', input_dict['gripper'], self.wrist_vel, self.wrist_accel)
         self.robot.push_command()
-        
+
     def run(self):
         self.socker_server.run()
 
