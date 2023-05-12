@@ -41,10 +41,10 @@ def teleop(client: RemoteClient):
             space : toggle moving
         """
     )
-    delta_lin = 0.02
+    delta_lin = 0.01
     delta_ang = 0.1
     enable_moving = True
-    
+
     # Put the console in raw mode
     original_settings = termios.tcgetattr(sys.stdin)
     tty.setraw(sys.stdin.fileno())

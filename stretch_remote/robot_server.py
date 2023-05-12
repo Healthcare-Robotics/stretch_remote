@@ -61,7 +61,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', type=int, default=5556)
     parser.add_argument('-s', '--speed', type=float, default=1.0,
-                        help='speed factor of the robot')
+                        help='speed factor of the robot (default: 1.0)')
     args = parser.parse_args()
 
     sm = RobotControlServer(port=args.port, speed_factor=args.speed)
