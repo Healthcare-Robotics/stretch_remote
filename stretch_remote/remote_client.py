@@ -5,6 +5,7 @@ from typing import Dict, List, Optional
 
 from stretch_remote.zmq_wrapper import SocketClient
 
+# Default home dict
 HOME_POS_DICT = {
         'y': 0.1, 'z': 0.75, 'roll': 0, 'pitch': -0.3, 'yaw': 0, 'gripper': 55
     }
@@ -12,12 +13,18 @@ HOME_POS_DICT = {
 ##############################################################################
 
 class RemoteClient:
-    def __init__(self, ip, port):
+    def __init__(self, ip, port=5556, home_dict=HOME_POS_DICT):
+        """
+        :arg ip       : IP address of the robot
+        :arg port     : Port number of the robot
+        :arg home_dict: Home position of the robot
+        """
         self.socket_client = SocketClient(ip=ip, port=port)
-    
+        self.home = home_dict
+
     def home(self):
         """Robot goes back home"""
-        s = json.dumps(HOME_POS_DICT)
+        s = json.dumps(self.home)
         self.socket_client.send_payload(s)
 
     def get_status(self) -> Optional[Dict]:

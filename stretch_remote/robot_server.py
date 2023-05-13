@@ -8,15 +8,16 @@ import json
 
 ##############################################################################
 class RobotControlServer:
-    def __init__(self, port):
+    def __init__(self, port, speed_factor=1.0):
         self.robot = stretch_body.robot.Robot()
         self.robot.startup()
 
-        self.arm_vel = 0.15
-        self.arm_accel = 0.15
+        self.arm_vel = 0.15 * speed_factor
+        self.arm_accel = 0.15 * speed_factor
 
-        self.wrist_vel = 0.000000001 
-        self.wrist_accel = 0.0000000001
+        # NOTE: the wrist velocity are not actually working
+        self.wrist_vel = 0.0001 * speed_factor
+        self.wrist_accel = 0.0001 * speed_factor
 
         self.socker_server = SocketServer(port=port,
                                           impl_callback=self.__request_callback)
@@ -59,7 +60,9 @@ class RobotControlServer:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', type=int, default=5556)
+    parser.add_argument('-s', '--speed', type=float, default=1.0,
+                        help='speed factor of the robot (default: 1.0)')
     args = parser.parse_args()
 
-    sm = RobotControlServer(port=args.port)
+    sm = RobotControlServer(port=args.port, speed_factor=args.speed)
     sm.run()
