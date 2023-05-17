@@ -32,6 +32,7 @@ class RemoteClient:
         """
         Get the current status of the robot
         :arg compact: if True, only return compact dict
+        :return: dict of the robot status
         """
         s = json.dumps({"compact_status": compact})
         s = self.socket_client.send_payload(s)
@@ -41,7 +42,9 @@ class RemoteClient:
 
     def move(self, description: Dict):
         """
-        Move the robot by specifying the xyz, rpy, griiper state in dict format
+        Move the robot by specifying the xyz, rpy, griiper state
+        in dict format
+        :description: dict desribe the abs joints of the robot
         """
         # print("Moving robot to", description)
         s = json.dumps({"move": description})

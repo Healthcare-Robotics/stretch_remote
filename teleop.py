@@ -12,6 +12,8 @@ import signal
 
 from stretch_remote.remote_client import RemoteClient
 
+##############################################################################
+
 def get_robot_status(client: RemoteClient):
     """
     Get the current status of the robot from RemoteClient class
@@ -80,9 +82,9 @@ def teleop(client: RemoteClient):
                 print("Exiting")
                 break
             elif keycode == '[':     # drive X
-                client.move({'delta_x':delta_lin})
+                client.move({'delta_x': - delta_lin})
             elif keycode == ']':     # drive X
-                client.move({'delta_x':delta_lin})
+                client.move({'delta_x': delta_lin})
             elif keycode == 'a':     # drive Y
                 client.move({'y':pos_dict['y'] - delta_lin})
             elif keycode == 'd':     # drive Y
