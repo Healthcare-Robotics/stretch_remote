@@ -18,7 +18,7 @@ def get_robot_status(client: RemoteClient):
     """
     _robot_status = client.get_status()
     if _robot_status is not None:
-        _, pos_dict = read_robot_status(_robot_status)
+        pos_dict = read_robot_status(_robot_status)
         return pos_dict
     return None
 
@@ -67,7 +67,7 @@ def teleop(client: RemoteClient):
         # print("Input received:", input_char, "\n")
         _robot_status = client.get_status()
         if _robot_status is not None:
-            _, pos_dict = read_robot_status(_robot_status)
+            pos_dict = read_robot_status(_robot_status)
         # print("Current position:", pos_dict)
 
         if keycode == ' ':     # toggle moving
@@ -80,9 +80,9 @@ def teleop(client: RemoteClient):
                 print("Exiting")
                 break
             elif keycode == '[':     # drive X
-                client.move({'x':-delta_lin})
+                client.move({'delta_x':delta_lin})
             elif keycode == ']':     # drive X
-                client.move({'x':delta_lin})
+                client.move({'delta_x':delta_lin})
             elif keycode == 'a':     # drive Y
                 client.move({'y':pos_dict['y'] - delta_lin})
             elif keycode == 'd':     # drive Y
