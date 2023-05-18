@@ -33,7 +33,7 @@ class RobotControlServer:
         json_dict = json.loads(request)
         if "move" in json_dict:
             self.navigate_robot_abs(json_dict["move"])
-            
+
         s = self.robot.get_status()
         if "compact_status" in json_dict and json_dict["compact_status"]:
             s = read_robot_status(s)

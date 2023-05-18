@@ -25,7 +25,7 @@ class RemoteClient:
 
     def home(self):
         """Robot goes back home"""
-        s = json.dumps(self.home_dict)
+        s = json.dumps({"move": self.home_dict, "compact_status": True})
         self.socket_client.send_payload(s)
 
     def get_status(self, compact=False) -> Optional[Dict]:
@@ -47,5 +47,5 @@ class RemoteClient:
         :description: dict desribe the abs joints of the robot
         """
         # print("Moving robot to", description)
-        s = json.dumps({"move": description})
+        s = json.dumps({"move": description, "compact_status": True})
         self.socket_client.send_payload(s)

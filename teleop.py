@@ -66,6 +66,10 @@ def teleop(client: RemoteClient):
             continue
         keycode  = sys.stdin.read(1)
 
+        if keycode == 'q':
+            print("Exiting")
+            break
+
         # print("Input received:", input_char, "\n")
         _robot_status = client.get_status()
         if _robot_status is not None:
@@ -75,13 +79,9 @@ def teleop(client: RemoteClient):
         if keycode == ' ':     # toggle moving
             enable_moving = not enable_moving
         elif keycode == 'h':     # go home
-            enable_moving = False
             client.home()
         if enable_moving:
-            if keycode == 'q':
-                print("Exiting")
-                break
-            elif keycode == '[':     # drive X
+            if keycode == '[':     # drive X
                 client.move({'delta_x': - delta_lin})
             elif keycode == ']':     # drive X
                 client.move({'delta_x': delta_lin})
@@ -110,6 +110,8 @@ def teleop(client: RemoteClient):
                 client.move({'gripper':pos_dict['gripper'] - 5})
             elif keycode == 'n':     # drive gripper
                 client.move({'gripper':pos_dict['gripper'] + 5})
+        else:
+            print("Enabled moving is off, press space to enable")
 
     # Restore the console to its original settings
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, original_settings)
