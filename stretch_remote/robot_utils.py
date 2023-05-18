@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 def read_robot_status(robot_status):
-
+    # NOTE: the x, y, z, roll, pitch, yaw are represented in terms of robot joints
+    # we will need to change this convention soon.
     pos_dict = dict()
     pos_dict['lift_effort'] = robot_status['lift']['force']
     pos_dict['arm_effort'] = robot_status['arm']['force']
@@ -25,8 +26,7 @@ def read_robot_status(robot_status):
     pos_dict['gripper'] = robot_status['end_of_arm']['stretch_gripper']['pos_pct']
 
     # print(json.dumps(robot_status['base'], indent=4))
-
-    return True, pos_dict
+    return pos_dict
 
 def do_vertical_control_loop(server, z, sum_force, peak_list):
     if sum_force <= 0:

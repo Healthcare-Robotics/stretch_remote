@@ -12,13 +12,15 @@ import signal
 
 from stretch_remote.remote_client import RemoteClient
 
+##############################################################################
+
 def get_robot_status(client: RemoteClient):
     """
     Get the current status of the robot from RemoteClient class
     """
     _robot_status = client.get_status()
     if _robot_status is not None:
-        _, pos_dict = read_robot_status(_robot_status)
+        pos_dict = read_robot_status(_robot_status)
         return pos_dict
     return None
 
@@ -64,25 +66,25 @@ def teleop(client: RemoteClient):
             continue
         keycode  = sys.stdin.read(1)
 
+        if keycode == 'q':
+            print("Exiting")
+            break
+
         # print("Input received:", input_char, "\n")
         _robot_status = client.get_status()
         if _robot_status is not None:
-            _, pos_dict = read_robot_status(_robot_status)
+            pos_dict = read_robot_status(_robot_status)
         # print("Current position:", pos_dict)
 
         if keycode == ' ':     # toggle moving
             enable_moving = not enable_moving
         elif keycode == 'h':     # go home
-            enable_moving = False
             client.home()
         if enable_moving:
-            if keycode == 'q':
-                print("Exiting")
-                break
-            elif keycode == '[':     # drive X
-                client.move({'x':-delta_lin})
+            if keycode == '[':     # drive X
+                client.move({'delta_x': - delta_lin})
             elif keycode == ']':     # drive X
-                client.move({'x':delta_lin})
+                client.move({'delta_x': delta_lin})
             elif keycode == 'a':     # drive Y
                 client.move({'y':pos_dict['y'] - delta_lin})
             elif keycode == 'd':     # drive Y
@@ -108,6 +110,8 @@ def teleop(client: RemoteClient):
                 client.move({'gripper':pos_dict['gripper'] - 5})
             elif keycode == 'n':     # drive gripper
                 client.move({'gripper':pos_dict['gripper'] + 5})
+        else:
+            print("Enabled moving is off, press space to enable")
 
     # Restore the console to its original settings
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, original_settings)
