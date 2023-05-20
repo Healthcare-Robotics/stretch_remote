@@ -1,6 +1,6 @@
 # stretch_remote
 
-Python library to remotely command and listen to stretch robot.
+Python library to remotely control and listen to a stretch robot.
 
 ## Quick Start
 
@@ -36,7 +36,6 @@ print(s)
 
 # Move the robot
 # dict is described in absolute joint angles:
-# 
 rc.move({'y': 0.1})
 ```
 
