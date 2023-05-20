@@ -71,9 +71,9 @@ def teleop(client: RemoteClient):
             break
 
         # print("Input received:", input_char, "\n")
-        _robot_status = client.get_status()
+        _robot_status = client.get_status(compact=True)
         if _robot_status is not None:
-            pos_dict = read_robot_status(_robot_status)
+            pos_dict = _robot_status
         # print("Current position:", pos_dict)
 
         if keycode == ' ':     # toggle moving

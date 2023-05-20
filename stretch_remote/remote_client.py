@@ -50,8 +50,11 @@ class RemoteClient:
         if return_cache_status and \
             time.time() - self.latest_poll < self.status_poll_limit and \
             self.cache_status is not None:
-            # TODO: compact and non-compact status cache differently
-            return self.cache_status
+            # NOTE: better way to identify 
+            # compact and non-compact status cache differently
+            is_compact = "pimu" in self.cache_status
+            if is_compact == compact:
+                return self.cache_status
 
         s = self.socket_client.send_payload(s)
         if s is None:
@@ -73,7 +76,4 @@ class RemoteClient:
         s = self.socket_client.send_payload(s)
         if s is None:
             return None
-        # save the status to cache
-        self.cache_status = json.loads(s)
-        self.latest_poll = time.time()
         return json.loads(s)
