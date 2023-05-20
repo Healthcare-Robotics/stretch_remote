@@ -15,8 +15,8 @@ class RobotControlServer:
         self.robot = stretch_body.robot.Robot()
         self.robot.startup()
 
-        self.arm_vel = 0.15 * speed_factor
-        self.arm_accel = 0.15 * speed_factor
+        self.arm_vel = 0.2 * speed_factor
+        self.arm_accel = 0.2 * speed_factor
 
         # NOTE: the wrist velocity are not actually working
         self.wrist_vel = 0.0001 * speed_factor
