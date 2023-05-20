@@ -5,7 +5,6 @@ import json
 from typing import Dict, List, Optional
 
 from stretch_remote.zmq_wrapper import SocketClient
-from stretch_remote.robot_utils import read_robot_status
 
 # Default home dict
 HOME_POS_DICT = {
@@ -25,7 +24,8 @@ class RemoteClient:
         self.home_dict = home_dict
         
         # related to caching the status
-        self.status_poll_limit = 1.0 / 15  # 15 hz limit
+        poll_freq_limit = 12  # 12 hz limit
+        self.status_poll_limit = 1.0 / poll_freq_limit
         self.cache_status = None # Cache the status and return it if more than 30 hz
         self.latest_poll = time.time()
 
@@ -56,17 +56,24 @@ class RemoteClient:
         s = self.socket_client.send_payload(s)
         if s is None:
             return None
-
+        # save the status to cache
         self.cache_status = json.loads(s)
         self.latest_poll = time.time()
         return json.loads(s)
 
-    def move(self, description: Dict):
+    def move(self, description: Dict) -> Optional[Dict]:
         """
         Move the robot by specifying the xyz, rpy, griiper state
         in dict format
         :description: dict desribe the abs joints of the robot
+        :return: dict of the robot status in compact form
         """
         # print("Moving robot to", description)
         s = json.dumps({"move": description, "compact_status": True})
         self.socket_client.send_payload(s)
+        if s is None:
+            return None
+        # save the status to cache
+        self.cache_status = json.loads(s)
+        self.latest_poll = time.time()
+        return json.loads(s)
