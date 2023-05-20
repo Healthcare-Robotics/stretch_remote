@@ -70,7 +70,7 @@ class RemoteClient:
         """
         # print("Moving robot to", description)
         s = json.dumps({"move": description, "compact_status": True})
-        self.socket_client.send_payload(s)
+        s = self.socket_client.send_payload(s)
         if s is None:
             return None
         # save the status to cache
