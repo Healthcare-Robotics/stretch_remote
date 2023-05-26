@@ -1,5 +1,34 @@
 #!/usr/bin/env python3
 
+class Schema:
+    SCHEMA_DEF = {
+        'x': float,
+        'y': float,
+        'z': float,
+        'roll': float,
+        'pitch': float,
+        'yaw': float,
+        'gripper': float,
+    }
+
+    @staticmethod
+    def check_input_schema(data):
+        if not isinstance(data, dict):
+            print("Input must be a dict")
+            return False
+        for key in data.keys():
+            if key not in Schema.SCHEMA_DEF:
+                print(f'Unknown key "{key}" provided.')
+                return False
+            if Schema.SCHEMA_DEF[key] == float and isinstance(data[key], int):
+                # allow int to be float
+                continue
+            if not isinstance(data[key], Schema.SCHEMA_DEF[key]):
+                print(f'Key "{key}" is not of type {Schema.SCHEMA_DEF[key].__name__}.')
+                return False
+        return True
+
+
 def read_robot_status(robot_status):
     # NOTE: the x, y, z, roll, pitch, yaw are represented in terms of robot joints
     # we will need to change this convention soon.

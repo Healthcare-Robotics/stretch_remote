@@ -5,16 +5,19 @@ import json
 from typing import Dict, List, Optional
 
 from stretch_remote.zmq_wrapper import SocketClient
+from stretch_remote.robot_utils import Schema
 
 # Default home dict
+# NOTE: x-axis is not set in DEFAULT HOME as user might drag and 
+# move the robot somewhere
 HOME_POS_DICT = {
-        'x': 0, 'y': 0.1, 'z': 0.75, 'roll': 0, 'pitch': -0.3, 'yaw': 0, 'gripper': 55
+        'y': 0.1, 'z': 0.75, 'roll': 0, 'pitch': -0.3, 'yaw': 0, 'gripper': 55
     }
 
 ##############################################################################
 
 class RemoteClient:
-    def __init__(self, ip, port=5556, home_dict=HOME_POS_DICT):
+    def __init__(self, ip='localhost', port=5556, home_dict=HOME_POS_DICT):
         """
         :arg ip       : IP address of the robot
         :arg port     : Port number of the robot
@@ -71,7 +74,10 @@ class RemoteClient:
         :description: dict desribe the abs joints of the robot
         :return: dict of the robot status in compact form
         """
-        # print("Moving robot to", description)
+        # check if description is a dict
+        if not Schema.check_input_schema(description):
+            print("[ERROR] Invalid input description provided")
+            return None
         s = json.dumps({"move": description, "compact_status": True})
         s = self.socket_client.send_payload(s)
         if s is None:
