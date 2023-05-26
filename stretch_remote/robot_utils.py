@@ -5,6 +5,7 @@ class Schema:
         'x': float,
         'y': float,
         'z': float,
+        'delta_x': float, # relative movement
         'roll': float,
         'pitch': float,
         'yaw': float,
