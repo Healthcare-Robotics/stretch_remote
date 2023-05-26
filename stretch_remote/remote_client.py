@@ -55,7 +55,7 @@ class RemoteClient:
             self.cache_status is not None:
             # NOTE: better way to identify 
             # compact and non-compact status cache differently
-            is_compact = "pimu" in self.cache_status
+            is_compact = "pimu" not in self.cache_status
             if is_compact == compact:
                 return self.cache_status
 
