@@ -41,6 +41,7 @@ def teleop(client: RemoteClient):
             j l : drive yaw
             b n : drive gripper
             space : toggle moving
+            h : go home
         """
     )
     delta_lin = 0.01

@@ -3,15 +3,12 @@
 import stretch_body.robot
 import time
 
-robot = stretch_body.robot.Robot()
-robot.startup()
+def level(robot, input_dict):
+    arm_vel = 0.01
+    arm_accel = 0.01
+    wrist_vel = 0.001 
+    wrist_accel = 0.001
 
-arm_vel = 0.01
-arm_accel = 0.01
-wrist_vel = 0.001 
-wrist_accel = 0.001
-
-def level(input_dict):
     if 'x' in input_dict:
         robot.base.translate_by(input_dict['x'], arm_vel, arm_accel)
     if 'y' in input_dict:
@@ -32,4 +29,6 @@ def level(input_dict):
 
 if __name__ == '__main__':
     gripper_dict = {'roll': 0.0, 'pitch': 0.0, 'yaw': 0.0, 'gripper':0}
-    level(gripper_dict)
+    robot = stretch_body.robot.Robot()
+    robot.startup()
+    level(robot, gripper_dict)

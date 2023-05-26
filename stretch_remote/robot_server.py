@@ -18,9 +18,12 @@ class RobotControlServer:
         self.arm_vel = 0.2 * speed_factor
         self.arm_accel = 0.2 * speed_factor
 
+        self.base_vel = 0.2 * speed_factor
+        self.base_accel = 0.2 * speed_factor
+
         # NOTE: the wrist velocity are not actually working
-        self.wrist_vel = 0.0001 * speed_factor
-        self.wrist_accel = 0.0001 * speed_factor
+        self.wrist_vel = 25 * speed_factor
+        self.wrist_accel = 15 * speed_factor
 
         self.socker_server = SocketServer(port=port,
                                           impl_callback=self.__request_callback)
@@ -49,7 +52,7 @@ class RobotControlServer:
             delta_x = input_dict['x'] - self.robot.base.status['x']
             self.robot.base.translate_by(delta_x, self.arm_vel, self.arm_accel)
         elif 'delta_x' in input_dict:
-            self.robot.base.translate_by(input_dict['delta_x'], self.arm_vel, self.arm_accel)
+            self.robot.base.translate_by(input_dict['delta_x'], self.base_vel, self.base_accel)
         if 'y' in input_dict:
             self.robot.arm.move_to(input_dict['y'], self.arm_vel, self.arm_accel)
         if 'z' in input_dict:
