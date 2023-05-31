@@ -53,6 +53,9 @@ class RobotControlServer:
             self.robot.base.translate_by(delta_x, self.arm_vel, self.arm_accel)
         elif 'delta_x' in input_dict:
             self.robot.base.translate_by(input_dict['delta_x'], self.base_vel, self.base_accel)
+        elif 'delta_rz' in input_dict:
+            self.robot.base.rotate_by(input_dict['delta_rz'])
+
         if 'y' in input_dict:
             self.robot.arm.move_to(input_dict['y'], self.arm_vel, self.arm_accel)
         if 'z' in input_dict:

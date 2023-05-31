@@ -33,12 +33,13 @@ def teleop(client: RemoteClient):
         Quit by pressing 'q'
         
         Instructions:
-            [ ] : drive X
-            a d : drive Y
-            x w : drive Z
-            u o : drive roll
-            , i : drive pitch
-            j l : drive yaw
+            [ ] : drive Base X
+            z c : rotate Base
+            a d : drive Arm  Y
+            x w : drive Lift Z
+            u o : rotate Wrist roll
+            , i : rotate Wrist pitch
+            j l : rotate Wrist yaw
             b n : drive gripper
             space : toggle moving
             h : go home
@@ -86,6 +87,10 @@ def teleop(client: RemoteClient):
                 client.move({'delta_x': - delta_lin})
             elif keycode == ']':     # drive X
                 client.move({'delta_x': delta_lin})
+            elif keycode == 'z':
+                client.move({'delta_rz': - delta_ang})
+            elif keycode == 'c':
+                client.move({'delta_rz': + delta_ang})
             elif keycode == 'a':     # drive Y
                 client.move({'y':pos_dict['y'] - delta_lin})
             elif keycode == 'd':     # drive Y

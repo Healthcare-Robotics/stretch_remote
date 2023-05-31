@@ -5,7 +5,8 @@ class Schema:
         'x': float,
         'y': float,
         'z': float,
-        'delta_x': float, # relative movement
+        'delta_x': float, # robot base relative displacement in meter
+        'delta_rz': float, # robot base relative angle in radian
         'roll': float,
         'pitch': float,
         'yaw': float,
@@ -44,7 +45,6 @@ def read_robot_status(robot_status):
     # if pos_dict['lift_effort'] < -75:
     #     print('Robot not ok, too much lift force')
     #     return False, None
-
     pos_dict['x'] = robot_status['base']['x']
     pos_dict['theta'] = robot_status['base']['theta']
 
