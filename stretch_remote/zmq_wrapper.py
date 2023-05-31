@@ -35,8 +35,8 @@ class SocketServer:
 
 ##############################################################################
 
-class SocketClient:    
-    def __init__(self, ip, port=5556, timeout_ms = 400):
+class SocketClient:
+    def __init__(self, ip, port=5556, timeout_ms = 800):
         self.context = zmq.Context()
         #  Socket to talk to server
         print("Connecting to socket server…")
